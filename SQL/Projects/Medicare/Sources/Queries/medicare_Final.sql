@@ -147,6 +147,9 @@ select * from departments;
 
 select count(*) from departments;
 
+truncate table doctors;
+
+select * from doctors;
 INSERT INTO Doctors (doctor_id, first_name, last_name, gender, specialization, department_id, hospital_id, qualification, experience_years, consultation_fee, phone_number, email, joining_date) VALUES
 ('DR0001', 'Anitha', 'Bhat', 'Female', 'Ent', 'D020', 'H015', 'MBBS, MCh', 26, 592.78, '9320037917', 'anitha.bhat92@yahoo.com', '2015-03-24'),
 ('DR0002', 'Anand', 'Panicker', 'Male', 'Radiology', 'D015', 'H012', 'MBBS, DNB', 33, 812.09, '9870831727', 'anand.panicker97@outlook.com', '2017-11-08'),
@@ -33452,7 +33455,12 @@ set foreign_key_checks=1;
 
 show tables;
 
-/* data profiling */
+/*  Departments data profiling */
+
+SELECT * from Departments where head_doctor_id is null ;
+
+/*  Doctors data profiling */
+
 select distinct gender
 from doctors;
 
@@ -33463,15 +33471,167 @@ group by gender;
 select count(distinct gender) as uni_gc
 from doctors;
 
+SELECT * FROM Doctors where department_id IS NULL;
+
+SELECT * FROM Doctors where email IS NULL;
+
+SELECT * FROM Doctors where email NOT REGEXP '^[A-Za-z0-9_%.-]+@[A-Za-z0-9-_.]+\\.[A-Za-z]{2,}$';
+
+/*  Doctors data Cleaning */
+
 select gender,
 case 
-when lower(TRIM (gender)) in ('male','m') then 'Male'
-when lower(TRIM (gender)) in ('female','f') then 'Female'
+when lower(TRIM(gender)) in ('male','m') then 'Male'
+when lower(TRIM(gender)) in ('female','f') then 'Female'
 else gender
-end as remv
+end as gender_clean
 from doctors;
 
+SET  session SQL_SAFE_UPDATES = 0;
+
+update doctors
+set gender=
+case
+when lower(trim(gender)) in ('male','m') then 'Male'
+when lower(TRIM(gender)) in ('female','f') then 'Female'
+else gender
+end;
+
+SELECT 
+email AS old_email,
+CASE
+WHEN email LIKE '%gmail.com' AND email NOT LIKE '%@%'
+THEN REPLACE(email,'gmail.com','@gmail.com') 
+WHEN email LIKE '%@gmail'
+THEN REPLACE(email,'@gmail','@gmail.com') # THEN CONCAT(email,'.com')
+WHEN email LIKE '%@@gmail.com' 
+THEN REPLACE(email,'@@gmail.com','@gmail.com')
+ELSE email
+END AS new_email
+FROM Doctors;
+
+update Doctors 
+SET email=
+CASE
+WHEN email LIKE '%gmail.com' AND email NOT LIKE '%@%'
+THEN REPLACE(email,'gmail.com','@gmail.com') 
+WHEN email LIKE '%@gmail'
+THEN REPLACE(email,'@gmail','@gmail.com') # THEN CONCAT(email,'.com')
+WHEN email LIKE '%@@gmail.com' 
+THEN REPLACE(email,'@@gmail.com','@gmail.com')
+ELSE email
+END 
+WHERE email not like '%@%.%' or
+	email like '%@@%.%';
+
+/* Patients data profiling */
+
+SELECT * from Patients where first_name <> ltrim(first_name);
+
+SELECT gender, count(*) 
+FROM Patients 
+group by gender;
+
+SELECT * FROM Patients where email is null;
+
+SELECT * from Patients where email NOT like '%@%.%'; 
+
+/* Patients data Cleaning */
+
+UPDATE Patients 
+SET first_name=ltrim(first_name)
+WHERE first_name <> LTRIM(first_name);
+
+SELECT DISTINCT gender from Patients;
+
+SELECT gender ,
+CASE
+WHEN lower(trim(gender)) in ('m','male')
+THEN 'Male'
+WHEN lower(trim(gender)) in ('f','female')
+THEN 'Female'
+END
+FROM Patients;
+ 
+update Patients 
+set gender =
+CASE
+WHEN lower(trim(gender)) in ('m','male')
+THEN 'Male'
+WHEN lower(trim(gender)) in ('f','female')
+THEN 'Female'
+ELSE gender
+END;
+
+
+SELECT email AS old_email, 
+CASE
+WHEN email LIKE '%gmail.com' AND email not like '%@%'
+THEN REPLACE(email,'%gmail.com','%@gmail.com')
+WHEN email like '%gmail'
+then concat(email,'.com')
+else email
+end as new_email
+FROM Patients;
+
+ 
+UPDATE Patients 
+set email=
+CASE
+WHEN email LIKE '%gmail.com' AND email not like '%@%'
+THEN REPLACE(email,'gmail.com','@gmail.com')
+WHEN email like '%gmail'
+then concat(email,'.com')
+else email
+end
+where email not like '%@%.%';
+
+/* Admission Data Profilling */
+
+SELECT * from Admissions where department_id is null;
+
+SELECT * from Admissions where discharge_date is null;
+
+/* Treatments Data Profilling */
+
+SELECT  * FROM Treatments where Admission_id is null;
+
+/* Insurance Data Profilling */
+
+SELECT  * FROM Insurance where insurance_provider is null;
+
+/* Employees Data Profilling */
+
+SELECT gender, count(*) 
+from Employee
+group by gender;
+
+SELECT * FROM Employees where department_id is null;
+
+/* Employees Data Cleanimg */
+
+select distinct gender from Employees;
+
+UPDATE Employees
+set gender =
+CASE
+when lower(trim(gender)) in ('male','m')
+then 'Male'
+when lower(trim(gender)) in ('female','f')
+then 'Female'
+else gender
+end;
+
+/* Billing Data Profilling */
+
+SELECT * FROM Billing where admission_id is null;
+
+SELECT * FROM Billing where appointment_id is null;
+
+
 /* practice */
+
+
 select hospital_name
 from hospitals
 where state='Tamil Nadu';
@@ -33483,6 +33643,194 @@ order by  bed_capacity desc;
 Select Doctors_name 
 from Doctors 
 where Specialization='Cardialogy';
+
+select count(*) as total_hos
+from hospitals;
+
+select count(*) as doc_count
+from doctors;
+
+select count(*) as doc_count
+from departments;
+
+select count(*)
+from doctors
+where experience_years > 10;
+
+select sum(bed_capacity)
+from hospitals;
+
+select round(avg(consultation_fee),2)
+from doctors;
+
+#lowest consultation fee - KPI
+select min(consultation_fee)
+from doctors;
+
+#highest hospital bed capacity -KPI
+select max(bed_capacity)
+from hospitals;
+
+#How many doctors are there in each specialization -KPI
+select  specialization,count(doctor_id) as doc_count
+from doctors
+group by specialization;
+
+select specialization,count(*) as doc_count
+from doctors
+group by specialization;
+
+#How many beds does each hospital have - KPI
+select hospital_name ,sum(bed_capacity)
+from hospitals
+group by hospital_name;
+
+#Which hospitals have more than 300 beds
+select hospital_name ,sum(bed_capacity) as bed_cap_count
+from hospitals
+group by hospital_name
+having bed_cap_count > 300;
+
+#Show only specializations that have more than 20 doctors
+select specialization,count(*) as doc_count
+from doctors
+group by specialization
+having doc_count > 20;
+
+#Show me the top 5 specializations based on number of doctors - KPI
+select specialization,count(*) as doc_count
+from doctors
+group by specialization
+order by  doc_count desc limit 5;
+
+select specialization,count(doctor_id) as doc_count
+from doctors
+group by specialization
+order by  doc_count desc limit 5;
+
+#Show only specializations having more than 20 doctors, ranked highest first
+select specialization,count(*) as doc_count
+from doctors
+group by specialization
+having doc_count > 20
+limit 1;
+
+#Give me each department along with the hospital it belongs to
+select d.department_name,h.hospital_name
+from departments d
+inner join hospitals h
+on d.hospital_id = h.hospital_id;
+
+#Show hospitals along with their departments
+select d.department_name,h.hospital_name
+from  hospitals h
+inner join departments d
+on d.hospital_id = h.hospital_id;
+
+#How many doctors are associated with each hospital
+select h.hospital_name,Count(d.doctor_id)
+from doctors d
+inner join hospitals h
+on d.hospital_id = h.hospital_id
+group by h.hospital_name;
+
+select h.hospital_name,Count(d.doctor_id)
+from doctors d
+inner join hospitals h
+on d.hospital_id = h.hospital_id
+group by d.hospital_id;
+
+select h.hospital_name,count(d.doctor_id) as doc_count
+from hospitals h
+inner join doctors d
+on  h.hospital_id = d.hospital_id 
+group by d.hospital_id;
+
+#How many doctors does each hospital have, including hospitals that currently have no doctors
+select h.hospital_name,count(d.doctor_id) as doc_count
+from hospitals h
+left join doctors d
+on  h.hospital_id = d.hospital_id 
+group by d.hospital_id;
+
+#Which hospitals have more than 20 doctors
+select h.hospital_name,count(d.doctor_id) as doc_count
+from hospitals h
+left join doctors d
+on  h.hospital_id = d.hospital_id 
+group by h.hospital_id
+having doc_count > 20;
+
+
+select specialization,count(doctor_id) as doctor_cnt
+from doctors
+group by specialization
+order by doctor_cnt desc limit 5;
+
+#average consultation fee for each specialization - KPI
+select specialization,round(avg(consultation_fee),2) as avg_cfee
+from doctors
+group by specialization;
+
+#How many appointments does each doctor have - KPI
+select d.doctor_id,d.first_name,count(appointment_id)
+from doctors d
+left join appointments a
+on d.doctor_id = a.doctor_id
+group by d.doctor_id;
+
+#Rank doctors by consultation fee
+select first_name,consultation_fee,row_number()over(order by consultation_fee desc) as rnk
+from doctors;
+
+#Doctors within departments
+select d.department_name,t.first_name,t.consultation_fee,row_number()over(order by consultation_fee desc) as rnk
+from departments d
+left join doctors t
+on d.department_id = t.department_id;
+
+#Ranking within specialization
+select d.department_name,t.first_name,t.consultation_fee,t.specialization,row_number()over(partition by t.specialization order by consultation_fee desc) as rnk
+from departments d
+left join doctors t
+on d.department_id = t.department_id;
+
+#Overall ranking
+select d.department_name,t.first_name,t.consultation_fee,rank()over(order by consultation_fee desc) as rnk
+from departments d
+left join doctors t
+on d.department_id = t.department_id;
+
+#Previous doctor's fee
+select d.department_name,t.first_name,t.consultation_fee,lag(consultation_fee)over(order by consultation_fee desc) as rnk
+from departments d
+left join doctors t
+on d.department_id = t.department_id;
+
+#Next doctor's fee
+select d.department_name,t.first_name,t.consultation_fee,lead(consultation_fee) over(order by consultation_fee desc) as rnk
+from departments d
+left join doctors t
+on d.department_id = t.department_id;
+
+#Rank doctors based on consultation fee within each department
+select d.department_name,t.first_name,t.consultation_fee,rank()over(partition by department_name order by consultation_fee desc) as rnk
+from departments d
+left join doctors t
+on d.department_id = t.department_id;
+
+
+ 
+
+
+
+
+
+
+
+
+
+
 
 
 

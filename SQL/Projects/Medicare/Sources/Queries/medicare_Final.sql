@@ -33650,7 +33650,7 @@ from hospitals;
 select count(*) as doc_count
 from doctors;
 
-select count(*) as doc_count
+select count(*) as dep_count
 from departments;
 
 select count(*)
@@ -33819,8 +33819,162 @@ from departments d
 left join doctors t
 on d.department_id = t.department_id;
 
+#Which hospitals have the highest operational activity?
+SELECT h.hospital_id,h.hospital_name,COUNT(a.appointment_id) AS total_appointments,COUNT(ad.admission_id) AS total_admissions
+FROM hospitals h
+LEFT JOIN appointments a
+ON h.hospital_id = a.hospital_id
+LEFT JOIN admissions ad
+ON h.hospital_id = ad.hospital_id
+GROUP BY h.hospital_id, h.hospital_name;
 
- 
+#Which departments have the highest workload?
+SELECT d.department_id,d.department_name,COUNT(DISTINCT a.appointment_id) AS total_appointments,COUNT(DISTINCT ad.admission_id) AS total_admissions
+FROM departments d
+LEFT JOIN appointments a
+ON d.hospital_id = a.hospital_id
+LEFT JOIN admissions ad
+ON d.department_id = ad.department_id
+GROUP BY d.department_id,d.department_name;
+
+#Which doctors have the highest workload?
+SELECT d.doctor_id,d.first_name,COUNT(a.appointment_id) AS total_appointments
+FROM doctors d
+LEFT JOIN appointments a
+ON d.doctor_id = a.doctor_id
+GROUP BY d.doctor_id,d.first_name; 
+
+SELECT d.doctor_id,d.first_name,COUNT(a.appointment_id) AS total_appointments,RANK() OVER (ORDER BY COUNT(a.appointment_id) DESC) AS doctor_rank
+FROM doctors d
+LEFT JOIN appointments a
+ON d.doctor_id = a.doctor_id
+GROUP BY d.doctor_id,d.first_name;
+
+# Which patients have the highest healthcare activity?
+SELECT p.patient_id,p.first_name,COUNT(DISTINCT a.appointment_id) AS total_appointments,COUNT(DISTINCT ad.admission_id) AS total_admissions
+FROM patients p
+LEFT JOIN appointments a
+ON p.patient_id = a.patient_id
+LEFT JOIN admissions ad
+ON p.patient_id = ad.patient_id
+GROUP BY p.patient_id,p.first_name;
+
+# Which hospitals have the highest number of admissions?
+SELECT h.hospital_name,COUNT(DISTINCT ad.admission_id) AS total_admissions
+FROM hospitals h
+JOIN admissions ad
+ON h.hospital_id = ad.hospital_id
+GROUP BY h.hospital_id, h.hospital_name
+ORDER BY total_admissions DESC
+LIMIT 5;
+
+# What are the admission patterns?
+SELECT admission_status,COUNT(*) AS total_admissions
+FROM admissions
+GROUP BY admission_status;
+
+# Find the next admission for each patient
+SELECT patient_id,admission_id,admission_date,LEAD(admission_date) OVER (PARTITION BY patient_id ORDER BY admission_date) AS next_admission
+FROM admissions
+ORDER BY patient_id, admission_date;
+
+# Are rooms being utilized effectively?
+SELECT hospital_id,COUNT(*) AS total_rooms,SUM(room_status = 'Occupied') AS occupied_rooms,SUM(room_status = 'Vacant') AS available_rooms
+FROM rooms
+GROUP BY hospital_id;
+
+# Which treatments have the highest cost?
+SELECT treatment_name,COUNT(*) AS treatment_count,SUM(treatment_cost) AS total_cost
+FROM treatments
+GROUP BY treatment_name
+ORDER BY total_cost DESC
+LIMIT 10;
+
+# Which laboratory tests have the highest count and cost?
+SELECT test_name,COUNT(*) AS test_count,SUM(test_cost) AS total_test_cost
+FROM laboratory
+GROUP BY test_name;
+
+# Which medicines generate the highest pharmacy revenue?
+SELECT m.medicine_name,SUM(p.quantity) AS quantity_sold,SUM(p.total_price) AS total_revenue
+FROM medicines m
+JOIN pharmacy p
+ON m.medicine_id = p.medicine_id
+GROUP BY m.medicine_name
+ORDER BY total_revenue DESC;
+
+# MediCare total billed revenue?
+SELECT SUM(total_amount) AS total_billed_revenue
+FROM billing;
+
+SELECT bill_status,COUNT(*) AS bill_count,SUM(total_amount) AS billed_amount
+FROM billing
+GROUP BY bill_status;
+
+# Which payment methods perform best?
+SELECT payment_status,COUNT(payment_id) AS transaction_count,SUM(payment_amount) AS payment_amount
+FROM payments
+GROUP BY payment_status;
+
+# Compare payment with previous payment
+SELECT payment_id,patient_id,payment_date,payment_amount,LAG(payment_amount) OVER(ORDER BY payment_date) AS previous_payment
+FROM payments
+ORDER BY payment_date;
+
+# KPI
+
+# Total Patients
+SELECT COUNT(*) AS total_patients
+FROM patients;
+
+# Total Appointments
+SELECT COUNT(appointment_id) AS total_appointments
+FROM appointments;
+
+# Total Admissions
+SELECT COUNT(admission_id) AS total_admissions
+FROM admissions;
+
+# Total Treatments
+SELECT COUNT(treatment_id) AS total_treatments
+FROM treatments;
+
+# Total Treatment Cost
+SELECT SUM(treatment_cost) AS total_treatment_cost
+FROM treatments;
+
+# Total Lab Activity
+SELECT COUNT(lab_test_id) AS total_lab_activity
+FROM laboratory;
+
+# Total Lab Cost
+SELECT SUM(test_cost) AS total_lab_cost
+FROM laboratory;
+
+# Total Pharmacy Activity
+SELECT COUNT(pharmacy_sale_id) AS total_pharmacy_activity
+FROM pharmacy;
+
+# Pharmacy Revenue
+SELECT SUM(total_price) AS pharmacy_revenue
+FROM pharmacy;
+
+# Total Billed Amount
+SELECT SUM(total_amount) AS total_billed_amount
+FROM billing;
+
+# Total Payment Collected
+SELECT SUM(payment_amount) AS total_payment_collected
+FROM payments;
+
+
+
+
+
+
+
+
+
 
 
 

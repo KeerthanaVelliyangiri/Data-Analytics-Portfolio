@@ -33631,7 +33631,7 @@ SELECT * FROM Billing where appointment_id is null;
 
 /* practice */
 
-
+/*
 select hospital_name
 from hospitals
 where state='Tamil Nadu';
@@ -33818,6 +33818,7 @@ select d.department_name,t.first_name,t.consultation_fee,rank()over(partition by
 from departments d
 left join doctors t
 on d.department_id = t.department_id;
+*/
 
 #Which hospitals have the highest operational activity?
 SELECT h.hospital_id,h.hospital_name,COUNT(a.appointment_id) AS total_appointments,COUNT(ad.admission_id) AS total_admissions

@@ -41225,6 +41225,35 @@ from Claims
 group by insurance_provider
 order by total_claim_amount DESC;
 
+# which clinics have the highest consultation workload
+SELECT c.clinic_id,c.clinic_name,c.clinic_type,COUNT(co.consultation_id) AS consultation_count
+FROM Clinics c
+LEFT JOIN Consultations co
+ON c.clinic_id = co.clinic_id
+GROUP BY c.clinic_id
+ORDER BY consultation_count DESC;
+
+# Specialist Workload
+SELECT s.specialist_id,s.first_name,s.specialization,COUNT(c.consultation_id) AS consultation_count
+FROM Specialists s
+LEFT JOIN Consultations c
+ON s.specialist_id = c.specialist_id
+GROUP BY s.specialist_id
+ORDER BY consultation_count DESC;
+
+# Member Engagement and Repeat Visits
+SELECT m.member_id,m.first_name,m.membership_type,COUNT(c.consultation_id) AS consultation_count
+FROM Members m
+LEFT JOIN Consultations c
+ON m.member_id = c.member_id
+GROUP BY m.member_id
+ORDER BY consultation_count DESC;
+
 # 
+
+
+
+
+
 
 

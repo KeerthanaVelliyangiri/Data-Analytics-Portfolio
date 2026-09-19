@@ -1,5 +1,3 @@
-# Nova University - Type Casting
-
 age = "20"
 semester = "3"
 attendance = "85.5"

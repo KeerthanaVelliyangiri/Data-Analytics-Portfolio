@@ -2,29 +2,45 @@
 
 ## 📌 Project Overview
 
-FreshMart Sales Analysis is an **Excel-based data analytics project** designed to understand sales performance, customer behavior, product profitability, and business performance across different sales channels, membership levels, categories, days, and store regions.
+FreshMart Sales Analysis is an **Excel-based data analytics project** developed to provide a consolidated view of FreshMart's business performance.
 
-The project focuses on identifying the reasons behind fluctuations in sales and finding opportunities to **increase sales volume while maintaining healthy profit margins**.
+The project analyzes **sales, profit, customers, membership segments, product categories, sales channels, day types, regions, and returns** to help management understand business performance and identify areas that require attention.
+
+The project follows the business requirements defined in the FreshMart Business Requirements Document (BRD).
 
 ---
 
 ## 🎯 Business Problem
 
-FreshMart experienced a significant decline in sales during **January 2026** compared with the previous month.
+FreshMart has business data across multiple areas such as customers, products, stores, regions, and sales transactions. This makes it difficult for management to get a **single consolidated view of business performance**.
 
 The key business question is:
 
-> **Why did FreshMart's sales decline sharply in January 2026, and what factors can be improved to increase sales while maintaining profitability?**
+> **Which customers, products, categories, sales channels, and regions are contributing to sales and profitability, and which areas require management attention?**
 
 The analysis investigates:
 
 * Monthly sales performance
 * Customer and membership behavior
 * Sales channel performance
-* Product category profitability
+* Product category performance
 * Weekday vs weekend performance
 * Regional sales performance
 * Return behavior
+
+The project focuses on understanding both **sales performance and profitability**, since high sales do not always indicate high profitability.
+
+---
+
+## 🎯 Business Objectives
+
+* Monitor overall sales and profit performance
+* Compare performance across key business dimensions
+* Identify major sales and profitability drivers
+* Understand customer and membership contribution
+* Compare sales channels and regions
+* Identify areas requiring further investigation
+* Support data-driven business decisions
 
 ---
 
@@ -47,62 +63,22 @@ The analysis investigates:
 * Conditional Formatting
 * Percentage Calculations
 * Date Grouping
-* Combo Charts
 * Dashboard Design
-
-### Important Calculations
-
-#### Profit
-
-```excel
-=Sales_Amount-Cost
-```
-
-#### Profit Margin
-
-```excel
-=Profit/Sales_Amount
-```
-
-For the overall dashboard:
-
-```excel
-=SUM(Profit)/SUM(Sales_Amount)
-```
-
-#### Return Rate
-
-```excel
-=Returned_Transactions/Total_Transactions
-```
-
-#### Average Transaction Value
-
-```excel
-=Total_Sales/Total_Transactions
-```
-
-#### Day Type
-
-```excel
-=IF(WEEKDAY(Transaction_Date,2)>5,"Weekend","Weekday")
-```
 
 ---
 
 ## 🧹 Data Cleaning & Analysis
 
-The dataset was prepared for analysis by reviewing the transaction data and ensuring that the fields required for analysis were suitable for PivotTables and dashboard calculations.
+The dataset was prepared for analysis by reviewing the transaction data and ensuring that the required fields were suitable for analysis and dashboard development.
 
 The analysis included:
 
 * Checking the dataset structure and required fields
-* Reviewing missing/blank values
+* Reviewing missing and blank values
 * Preparing date fields for monthly analysis
-* Creating calculated fields for Profit and Profit Margin
-* Creating a Weekday/Weekend classification
-* Calculating return rate
-* Calculating overall business KPIs
+* Creating calculated fields
+* Creating Weekday/Weekend classification
+* Calculating business KPIs
 * Creating PivotTables for different business dimensions
 * Connecting PivotTables to interactive slicers
 * Building PivotCharts for business analysis
@@ -130,7 +106,7 @@ The Excel dashboard provides an interactive view of FreshMart's overall business
 
 ### Dashboard Screenshot
 
-![FreshMart Sales Dashboard](Dashboard Screenshot/Dashboard Screenshot.png)
+![FreshMart Sales Dashboard](Dashboard%20Screenshot/Dashboard%20Screenshot.png)
 
 ---
 
@@ -138,13 +114,13 @@ The Excel dashboard provides an interactive view of FreshMart's overall business
 
 The dashboard contains five major KPIs:
 
-| KPI              |   Value | Purpose                                  |
-| ---------------- | ------: | ---------------------------------------- |
-| 💰 Total Sales   | ₹28.95L | Measures overall revenue generated       |
-| 📈 Total Profit  |  ₹7.37L | Measures total profit generated          |
-| 📊 Profit Margin |  25.47% | Measures profitability relative to sales |
-| 🛒 Orders        |   2,500 | Measures transaction/order volume        |
-| 👥 Customers     |     700 | Measures customer base                   |
+| KPI | Value | Purpose |
+|---|---:|---|
+| 💰 Total Sales | ₹28.95L | Measures overall revenue generated |
+| 📈 Total Profit | ₹7.37L | Measures total profit generated |
+| 📊 Profit Margin | 25.47% | Measures profitability relative to sales |
+| 🛒 Orders | 2,500 | Measures transaction volume |
+| 👥 Customers | 700 | Measures customer base |
 
 ### KPI Interpretation
 
@@ -152,9 +128,9 @@ The dashboard contains five major KPIs:
 
 **Total Profit:** Shows the amount of profit generated after costs.
 
-**Profit Margin:** Shows how much profit FreshMart generates from its sales.
+**Profit Margin:** Shows how much profit FreshMart generates relative to its sales.
 
-**Orders:** Indicates the transaction volume and helps identify changes in customer purchasing activity.
+**Orders:** Indicates transaction volume and helps identify changes in customer purchasing activity.
 
 **Customers:** Indicates the number of customers contributing to the business.
 
@@ -162,19 +138,19 @@ The dashboard contains five major KPIs:
 
 # 🔍 Key Insights
 
-## 1. 📉 January Sales Decline Followed by Recovery
+## 1. 📉 January Sales Decline and Recovery
 
 January 2026 recorded the lowest sales during the analyzed period.
 
-However, sales recovered in:
+Sales recovered in:
 
 **January → February → March**
 
-This indicates that the January decline was mainly associated with a reduction in transaction activity rather than a permanent decline in business performance.
+This highlights a significant change in monthly sales and transaction activity that requires further investigation.
 
 ### Business Impact
 
-FreshMart should investigate the factors that caused the temporary reduction in customer/order activity.
+FreshMart should investigate the factors associated with the January decline, such as transaction activity, customer behavior, product mix, discounts, and channel performance.
 
 ---
 
@@ -182,74 +158,86 @@ FreshMart should investigate the factors that caused the temporary reduction in 
 
 The **In-Store channel contributes the largest share of sales**, while Online and Mobile App channels contribute smaller portions.
 
+* In-Store – 71%
+* Online – 22%
+* Mobile App – 7%
+
 ### Business Impact
 
-FreshMart is highly dependent on physical-store customers.
+FreshMart is highly dependent on physical-store sales.
 
-A decline in store footfall could therefore have a significant impact on overall sales.
+A change in store-based customer activity could therefore affect overall sales performance.
 
 ### Opportunity
 
-FreshMart can increase digital-channel adoption through:
+FreshMart can monitor and improve digital-channel adoption through:
 
 * Mobile App promotions
 * Online-exclusive offers
 * Loyalty rewards
-* Personalized recommendations
+* Personalized promotions
 * Digital coupons
 
 ---
 
-## 3. 🥐 Bakery Has the Highest Profit Margin
+## 3. 🥐 Sales and Profitability Differ Across Categories
 
-Beverages generate the highest sales, but **Bakery provides the highest profit margin**.
+The analysis shows a difference between **high-revenue categories and high-margin categories**.
+
+For example, Beverages generate the highest sales contribution, while Bakery provides a higher profit margin.
 
 This highlights an important business finding:
 
 > **The highest-selling category is not necessarily the most profitable category.**
 
+### Business Impact
+
+FreshMart should consider both **sales and profitability** when making product and category decisions.
+
 ### Opportunity
 
-FreshMart can promote high-margin categories such as:
+High-margin categories such as:
 
 * Bakery
 * Personal Care
 * Snacks
 
-through product bundles and cross-selling.
+can be considered for suitable product bundles and cross-selling strategies.
 
 ---
 
 ## 4. 📅 Weekend Performance Is More Profitable
 
-Weekend sales are similar to weekday sales, but the **weekend profit margin is significantly higher**.
+Weekend sales are relatively similar to weekday sales, while weekend profitability is higher.
 
 ### Business Impact
 
-This suggests that FreshMart should focus on profitable products and targeted promotions during weekends rather than relying on heavy discounts.
+This indicates that day-type performance should be evaluated using both **sales and profit**, rather than sales alone.
 
 ### Opportunity
 
-Examples include:
+FreshMart can investigate:
 
-* Bakery + Beverage combinations
-* Snacks + Beverage bundles
-* Personal Care offers
-* Weekend loyalty rewards
+* Product mix
+* Discount levels
+* Customer purchasing behavior
+* Average transaction value
+
+to understand the factors affecting weekday and weekend profitability.
 
 ---
 
-## 5. 👑 Gold Members Are the Most Valuable Customer Segment
+## 5. 👑 Gold Members Are the Highest-Contributing Segment
 
-Gold members generate significantly higher sales and have higher purchasing frequency compared with Bronze and Silver members.
+Gold members generate significantly higher sales contribution compared with Bronze and Silver members.
 
 ### Business Impact
 
-Gold customers are an important source of recurring revenue.
+Gold members are an important customer segment for FreshMart.
 
-### Recommendation
+### Opportunity
 
-FreshMart should focus on Gold-member retention through:
+FreshMart can focus on customer retention through:
 
 * Exclusive offers
 * Reward points
@@ -261,9 +249,13 @@ FreshMart should focus on Gold-member retention through:
 
 ## 6. 💡 Product Mix Is an Important Profitability Opportunity
 
-The analysis shows a difference between **high-revenue products/categories** and **high-margin products/categories**.
+The analysis shows differences between **high-revenue products/categories and high-margin products/categories**.
 
-FreshMart should therefore optimize its product mix instead of focusing only on sales volume.
+### Business Impact
+
+FreshMart should optimize its product mix instead of focusing only on sales volume.
+
+Both revenue contribution and profitability should be considered when evaluating products and categories.
 
 ---
 
@@ -278,13 +270,13 @@ Possible factors include:
 * Customer purchasing behavior
 * Average transaction value
 
-Further analysis of weekday transactions can help identify the exact reason.
+Further analysis of weekday transactions can help identify the factors associated with the difference.
 
 ---
 
 ## 8. 🔄 Returns Should Be Monitored
 
-The overall return rate is relatively low, but returns should still be monitored across:
+Return behavior should be monitored across:
 
 * Product categories
 * Sales channels
@@ -292,7 +284,9 @@ The overall return rate is relatively low, but returns should still be monitored
 * Stores
 * Products
 
-Identifying categories or channels with unusually high return rates can help reduce revenue leakage.
+### Business Impact
+
+Identifying categories or channels with higher return activity can help FreshMart identify areas requiring further investigation.
 
 ---
 
@@ -300,30 +294,30 @@ Identifying categories or channels with unusually high return rates can help red
 
 Based on the analysis, the following actions are recommended for FreshMart:
 
-### 1. Increase Transaction Volume
+### 1. Monitor Sales and Transaction Trends
 
-Focus on recovering customer/order activity during low-sales periods, especially after significant monthly declines.
+Track monthly sales and transaction activity to identify significant changes and investigate low-performance periods.
 
 ### 2. Strengthen Digital Channels
 
-Increase Online and Mobile App adoption through:
+Monitor Online and Mobile App performance and increase digital customer engagement through:
 
-* App-exclusive promotions
+* Digital promotions
 * Digital loyalty rewards
 * Personalized offers
 * Online shopping incentives
 
-### 3. Focus on High-Margin Categories
+### 3. Balance Sales and Profitability
 
-Promote high-margin categories such as **Bakery and Personal Care** through bundles and cross-selling.
+Evaluate products and categories using both **sales contribution and profit margin** instead of focusing only on revenue.
 
 ### 4. Improve Weekday Performance
 
-Use targeted weekday campaigns and bundle offers instead of excessive discounts.
+Investigate weekday profitability and identify suitable opportunities to improve performance through product mix, targeted promotions, and customer engagement.
 
-### 5. Retain Gold Members
+### 5. Retain High-Contribution Customers
 
-Develop personalized loyalty strategies for Gold members because they contribute significantly to sales and repeat purchases.
+Develop suitable loyalty strategies for Gold members to encourage continued engagement and repeat purchases.
 
 ### 6. Use Cross-Selling
 
@@ -333,28 +327,25 @@ Examples:
 * Snacks + Beverages
 * Personal Care product combinations
 
-This can increase the **Average Transaction Value**.
+Cross-selling can help increase the **Average Transaction Value**.
 
 ### 7. Monitor Returns
 
-Track return rates by product, category, channel, and region to identify potential problem areas.
+Track return activity by product, category, channel, region, and store to identify potential problem areas.
+
+### 8. Monitor Regional Performance
+
+Compare regional performance and drill down to individual stores to identify areas that require further management attention.
 
 ---
 
 # 🎯 Conclusion
 
-The analysis shows that FreshMart's major challenge is not simply profitability but **maintaining consistent transaction volume and sales performance**.
+The FreshMart Sales Analysis dashboard provides a **single consolidated view of business performance** across sales, profit, customers, membership segments, categories, channels, day types, and regions.
 
-The sharp January decline highlights the need to monitor monthly order activity closely. At the same time, the analysis identifies several opportunities for growth:
+The analysis shows that FreshMart should not evaluate performance using sales alone. **Profitability, customer contribution, product mix, sales channels, regional performance, and transaction activity** should also be considered.
 
-* Increase digital-channel adoption
-* Retain high-value Gold members
-* Promote high-margin categories
-* Improve weekday performance
-* Use targeted promotions instead of excessive discounts
-* Increase Average Transaction Value through cross-selling
-
-Overall, FreshMart can improve business performance by combining **customer retention, product profitability, digital-channel growth, and targeted promotional strategies**.
+The dashboard helps stakeholders identify important business patterns and areas requiring further investigation, supporting **data-driven business decisions**.
 
 ---
 
@@ -365,11 +356,17 @@ This project demonstrates practical skills in:
 * Excel Data Analysis
 * Data Cleaning
 * Business Problem Solving
+* Business Requirement Analysis
 * KPI Development
 * PivotTable Analysis
+* PivotChart Development
 * Data Visualization
 * Interactive Dashboard Development
 * Business Insight Generation
 * Data-Driven Recommendations
 
+---
 
+## 🔄 Project Flow
+
+**Business Requirements → Data Preparation → KPI Development → Analysis → Dashboard → Business Insights → Recommendations**

@@ -2,106 +2,95 @@
 
 ## Business Problem
 
-### How effectively is MediCare managing hospital operations, patient activity, healthcare services, and revenue collection across its hospital network?
+### How can MediCare gain a consolidated view of hospital operations, patient services, resource utilization and financial performance across multiple hospitals?
 
-MediCare's healthcare database contains information about hospitals, departments, doctors, patients, appointments, admissions, rooms, treatments, laboratory services, pharmacy transactions, employees, insurance, billing, and payments.
+MediCare's healthcare database contains information about hospitals, departments, doctors, patients, appointments, admissions, treatments, laboratory services, pharmacy sales, billing, payments and insurance.
 
-The SQL analysis focuses on understanding hospital and doctor workload, patient healthcare activity, admission patterns, room utilization, treatment and laboratory costs, pharmacy revenue, billing performance, and payment collection.
+The business problem is that healthcare management needs a consolidated view of operational activity and financial performance across multiple hospitals. Without proper analysis, it becomes difficult to understand hospital workload, doctor utilization, patient service activity, room occupancy, treatment costs, laboratory workload, pharmacy revenue, billing status and payment performance.
 
-The analysis also identifies data-quality issues such as inconsistent gender values, invalid email formats, missing department relationships, and different date formats.
+The SQL analysis focuses on transforming the relational healthcare data into meaningful business insights that can support hospital operations, resource planning and financial monitoring.
 
 ### Business Objective
 
-**Analyze MediCare's healthcare operations and financial transactions to identify workload, resource utilization, service activity, billing, and payment collection patterns.**
+**Analyze hospital operations, patient service activity, resource utilization and financial transactions to support data-driven healthcare management decisions.**
 
 ### Solution
 
-MediCare can use the SQL analysis to:
+MediCare can use the analysis to:
 
-1. **Monitor hospital activity**
+1. **Analyze hospital activity**
+   - Compare appointment and admission volumes across hospitals.
+   - Identify hospitals with higher operational activity.
+   - Support hospital-level resource planning.
 
-   * Compare appointments and admissions across hospitals.
-   * Identify hospitals with higher operational activity.
-   * Support hospital-level resource planning.
+2. **Monitor department and doctor workload**
+   - Analyze admission workload by department.
+   - Measure doctor appointment activity.
+   - Rank doctors based on workload.
+   - Support staffing and workload balancing.
 
-2. **Analyze doctor workload**
+3. **Understand patient service activity**
+   - Analyze patient appointments and admissions.
+   - Track healthcare activity across treatments, laboratory services and pharmacy.
+   - Identify patients with repeated service utilization.
 
-   * Count appointments handled by each doctor.
-   * Rank doctors based on appointment activity.
-   * Understand workload distribution across doctors.
+4. **Evaluate hospital resource utilization**
+   - Analyze admission patterns and statuses.
+   - Calculate average length of stay.
+   - Monitor room occupancy across hospitals.
+   - Support capacity planning.
 
-3. **Evaluate department workload**
+5. **Analyze treatment and laboratory services**
+   - Identify high-volume treatments.
+   - Compare treatment costs.
+   - Analyze laboratory test volume and cost.
+   - Monitor laboratory completion and pending status.
 
-   * Analyze admission activity by department.
-   * Compare workload across departments.
-   * Identify departments requiring closer operational monitoring.
+6. **Monitor pharmacy and financial performance**
+   - Analyze medicine quantities and pharmacy revenue.
+   - Calculate total billed amounts.
+   - Compare billing status.
+   - Analyze payment status and payment transactions.
 
-4. **Understand patient activity**
-
-   * Identify patients with higher appointment and admission activity.
-   * Understand patient-level healthcare service usage.
-
-5. **Monitor admissions and hospital stay**
-
-   * Analyze admission types and admission statuses.
-   * Calculate average length of stay using valid admission and discharge dates.
-   * Identify hospitals and departments with higher admission activity.
-
-6. **Monitor room utilization**
-
-   * Compare occupied and vacant rooms.
-   * Analyze room availability across hospitals.
-   * Support hospital capacity planning.
-
-7. **Analyze healthcare services**
-
-   * Identify treatments with higher activity and cost.
-   * Analyze laboratory test volume and cost.
-   * Identify medicines generating higher pharmacy revenue.
-
-8. **Monitor billing and payments**
-
-   * Calculate total billed amount.
-   * Analyze billing status.
-   * Compare payment status and payment amounts.
-   * Identify potential gaps between billed and collected amounts.
-
-9. **Improve data quality**
-
-   * Standardize inconsistent gender values.
-   * Investigate invalid email formats.
+7. **Improve data quality**
+   - Identify inconsistent categorical values.
+   - Validate email and demographic fields.
+   - Handle date fields stored as text.
+   - Identify negative financial values requiring investigation.
 
 ---
 
 ## Dataset / Database Structure
 
-The MediCare project uses a relational MySQL database containing interconnected healthcare and financial entities.
+The MediCare project uses a relational healthcare database named `medicaredb` containing **15 interconnected tables**.
 
 ### Main Tables
 
-| Table          | Purpose                                                         |
-| -------------- | --------------------------------------------------------------- |
-| `hospitals`    | Hospital information, location, type and bed capacity           |
-| `departments`  | Department information and hospital association                 |
-| `doctors`      | Doctor details, specialization, experience and consultation fee |
-| `patients`     | Patient demographic and registration information                |
-| `appointments` | Patient-doctor appointment activity                             |
-| `admissions`   | Patient inpatient admission and discharge information           |
-| `rooms`        | Hospital room information and room status                       |
-| `treatments`   | Treatment activity and treatment cost                           |
-| `laboratory`   | Laboratory tests, status and test cost                          |
-| `medicines`    | Medicine information, category, price and stock                 |
-| `pharmacy`     | Pharmacy transactions, quantity and revenue                     |
-| `employees`    | Hospital employee and workforce information                     |
-| `insurance`    | Patient insurance and coverage information                      |
-| `billing`      | Patient bills, charge components and total billed amount        |
-| `payments`     | Payment transactions, payment status and payment mode           |
+| Table | Purpose |
+|---|---|
+| `Hospitals` | Hospital details, location, type and bed capacity |
+| `Departments` | Department information and hospital association |
+| `Doctors` | Doctor details, specialization, experience and consultation fee |
+| `Patients` | Patient demographic and registration information |
+| `Appointments` | Patient appointment and doctor service records |
+| `Admissions` | Patient admission, discharge and admission status |
+| `Rooms` | Hospital room details, charges and room status |
+| `Treatments` | Treatments provided to admitted patients |
+| `Laboratory` | Laboratory tests, results, costs and status |
+| `Medicines` | Medicine information, pricing and stock |
+| `Pharmacy` | Medicine sales, quantities and revenue |
+| `Employees` | Hospital employee and department information |
+| `Insurance` | Insurance provider and coverage information |
+| `Billing` | Patient billing and bill status |
+| `Payments` | Payment transactions, modes and payment status |
 
-The main analytical flow is:
+### Database Relationships
+
+The major healthcare process follows:
 
 **Patient → Appointment → Admission → Treatment / Laboratory / Pharmacy → Billing → Payment**
 
-The SQL database implements relationships between these healthcare entities using primary and foreign keys.
+The database also connects hospitals with departments, doctors, rooms, employees, appointments, admissions, laboratory services and pharmacy transactions.
 
 ---
 
@@ -111,325 +100,351 @@ The SQL analysis focuses on the following business areas:
 
 ### Hospital Analysis
 
-* Count total hospitals.
-* Analyze hospital-level information.
-* Compare hospital appointment activity.
-* Compare hospital admission activity.
-* Identify hospitals with higher operational activity.
-* Analyze hospital capacity and room availability.
-
-### Doctor Analysis
-
-* Count doctors.
-* Analyze doctors by specialization.
-* Analyze doctor experience.
-* Compare doctors across hospitals and departments.
-* Calculate appointment workload for each doctor.
-* Rank doctors based on appointment activity.
-
-The project uses `RANK()` to identify doctor workload rankings.
+- Analyze appointment activity by hospital.
+- Analyze admission activity by hospital.
+- Identify hospitals with higher operational activity.
+- Compare appointment and admission volumes.
+- Support hospital-level resource planning.
 
 ### Department Analysis
 
-* Count and analyze departments.
-* Compare departments across hospitals.
-* Analyze department admission workload.
-* Identify departments with higher admission activity.
-* Review departments with missing head-doctor information.
+- Analyze admission workload by department.
+- Compare workload across departments.
+- Identify departments with higher admission activity.
+- Support department-level staffing decisions.
 
-### Patient Analysis
+### Doctor Analysis
 
-* Count total patients.
-* Analyze patient appointment activity.
-* Analyze patient admission activity.
-* Identify patients with higher healthcare activity.
-* Compare patient-level appointments and admissions.
+- Analyze doctor appointment workload.
+- Compare appointment volumes across doctors.
+- Rank doctors based on appointment activity.
+- Identify doctors with higher service utilization.
 
-The SQL analysis uses `COUNT(DISTINCT ...)` when combining appointment and admission activity to avoid incorrectly multiplying records.
+### Patient Activity Analysis
 
-### Appointment Analysis
-
-* Count total appointments.
-* Analyze appointments by doctor.
-* Identify doctors with higher appointment workload.
-* Compare appointment activity across hospitals.
-* Use appointment activity as an operational workload indicator.
+- Analyze patient appointment activity.
+- Analyze patient admission activity.
+- Identify patients with repeated appointments.
+- Identify patients without appointment activity.
+- Examine patient service utilization across healthcare operations.
 
 ### Admission Analysis
 
-* Count total admissions.
-* Compare admissions across hospitals.
-* Analyze admission status.
-* Analyze admission types.
-* Calculate average length of stay where valid dates are available.
-* Use `LEAD()` to identify the next admission for a patient.
+- Analyze admission types such as Emergency, Planned and Referral.
+- Analyze admission status.
+- Calculate average length of stay.
+- Convert text-based admission and discharge dates using `STR_TO_DATE()`.
+- Support hospital capacity planning.
 
-The project specifically includes hospital admission ranking, admission-status analysis, and next-admission analysis.
+### Room Utilization Analysis
 
-### Room Analysis
-
-* Count rooms by hospital.
-* Identify occupied rooms.
-* Identify vacant/available rooms.
-* Compare room utilization across hospitals.
-
-The SQL analysis directly compares total, occupied, and available rooms by hospital.
+- Analyze occupied, vacant and maintenance rooms.
+- Calculate room occupancy percentage.
+- Compare room utilization across hospitals.
+- Identify hospitals with higher room utilization.
 
 ### Treatment Analysis
 
-* Count treatment activity.
-* Calculate treatment cost.
-* Identify treatments with higher total cost.
-* Compare treatment volume and cost.
-
-The project identifies the highest-cost treatments using `COUNT()` and `SUM()` with grouping and sorting.
+- Analyze treatment volume.
+- Compare treatment costs.
+- Identify treatments with higher total cost.
+- Analyze treatment status such as Completed, Ongoing and Cancelled.
 
 ### Laboratory Analysis
 
-* Count laboratory tests.
-* Calculate total laboratory cost.
-* Compare test volume.
-* Identify laboratory tests with higher activity and cost.
-* Analyze laboratory service status where applicable.
-
-The SQL includes test-level count and cost analysis.
+- Analyze laboratory test volume.
+- Compare total laboratory test costs.
+- Identify frequently performed tests.
+- Analyze laboratory test status.
 
 ### Pharmacy Analysis
 
-* Analyze medicine-level transactions.
-* Calculate quantity sold.
-* Calculate pharmacy revenue.
-* Identify medicines generating higher revenue.
-* Compare medicine activity using pharmacy transactions.
-
-The SQL calculates medicine quantity sold and total pharmacy revenue.
+- Analyze medicine quantities sold.
+- Calculate pharmacy revenue.
+- Identify medicines with higher sales volume.
+- Identify medicines generating higher revenue.
 
 ### Billing Analysis
 
-* Calculate total billed revenue.
-* Analyze billing status.
-* Compare billed amounts by bill status.
-* Analyze room, doctor, medicine, laboratory and other charge components.
-
-The `billing` table stores these individual charge components together with `total_amount` and `bill_status`.
+- Calculate total billed amount.
+- Analyze bill count by billing status.
+- Compare Paid, Partially Paid and Unpaid bills.
+- Identify financial records requiring further validation.
 
 ### Payment Analysis
 
-* Analyze payment transactions.
-* Compare payment status.
-* Analyze payment amount.
-* Analyze payment methods.
-* Compare payments over time.
-* Use `LAG()` to compare a payment with the previous payment.
-
-The SQL uses `LAG(payment_amount)` ordered by payment date for payment comparison.
-
-### KPI Analysis
-
-The project includes SQL-based KPIs such as:
-
-* Total Patients
-* Total Appointments
-* Total Admissions
-* Total Treatments
-* Total Laboratory Activity
-* Total Pharmacy Activity
-* Total Billed Amount
-* Total Payment Collected
-* Collection Gap
-* Collection Rate
-* Hospital Activity
-* Department Workload
-* Doctor Workload
-* Room Utilization
-
-The project requirements define collection gap as the difference between billed amount and collected payment, with careful aggregation required to avoid duplicate counting.
+- Analyze payment transactions.
+- Compare successful, failed and refunded payments.
+- Analyze payment amounts by status.
+- Compare payment activity across payment modes.
 
 ---
 
 ## Tools & Technologies
 
-The project was developed using **MySQL and SQL**.
+The project was developed using **MySQL** and SQL-based analytical techniques.
 
 ### Technologies
 
-* MySQL
-* SQL
-* Relational Database Management System
+- MySQL
+- SQL
+- Relational Database Management System
 
 ### SQL Techniques
 
-* `CREATE DATABASE`
-* `CREATE TABLE`
-* `ALTER TABLE`
-* `PRIMARY KEY`
-* `FOREIGN KEY`
-* `INSERT`
-* `UPDATE`
-* `SELECT`
-* `DISTINCT`
-* `WHERE`
-* `ORDER BY`
-* `LIMIT`
-* `GROUP BY`
-* `HAVING`
-* Aggregate Functions
-* `COUNT()`
-* `SUM()`
-* `AVG()`
-* `MIN()`
-* `MAX()`
-* `INNER JOIN`
-* `LEFT JOIN`
-* Subqueries
-* `CASE`
-* `REGEXP`
-* `ROW_NUMBER()`
-* `RANK()`
-* `LAG()`
-* `LEAD()`
-
-The project scope specifically includes aggregation, joins, and meaningful window-function analysis.
+- `SELECT`
+- `DISTINCT`
+- `WHERE`
+- `GROUP BY`
+- `HAVING`
+- `ORDER BY`
+- `LIMIT`
+- Aggregate Functions
+- `COUNT()`
+- `SUM()`
+- `AVG()`
+- `MIN()`
+- `MAX()`
+- `INNER JOIN`
+- `LEFT JOIN`
+- Subqueries
+- `STR_TO_DATE()`
+- `DATEDIFF()`
+- `ROUND()`
+- `CONCAT()`
+- `TRIM()`
+- Window Functions
+- `ROW_NUMBER()`
+- `RANK()`
+- `DENSE_RANK()`
+- `LAG()`
+- `LEAD()`
+- `PARTITION BY`
 
 ---
 
 ## Data Profiling / Preparation
 
-Before performing the final analysis, the SQL project includes data profiling and cleaning activities.
+Before performing the business analysis, the healthcare database was examined to understand the structure, relationships and quality of the available data.
 
-The analysis checks:
+The analysis included:
 
-* Distinct gender values.
-* Gender frequency.
-* Doctors with missing department IDs.
-* Doctors with missing email addresses.
-* Invalid email formats.
-* Departments without head doctors.
-* Inconsistent date formats.
-* Missing values.
-* Data consistency across related tables.
+- Reviewing all 15 table structures.
+- Checking primary and foreign key relationships.
+- Reviewing table row counts.
+- Checking distinct values in categorical columns.
+- Identifying inconsistent categorical values.
+- Checking missing values.
+- Validating email formats.
+- Reviewing patient and doctor demographic fields.
+- Checking department and hospital relationships.
+- Converting text-based dates for analysis.
+- Identifying negative billing and payment values.
+- Validating treatment and financial records before aggregation.
 
-For example, the SQL identifies inconsistent gender values and invalid email formats using `DISTINCT`, `GROUP BY`, `IS NULL`, and `REGEXP`.
+### Data Quality Findings
 
-The project also standardizes gender values such as `Male`, `MALE`, `m`, `Female`, and `FEMALE` using `TRIM()`, `LOWER()`, and `CASE`.
+Some data-quality issues were identified during profiling:
 
-Email-format issues are also investigated and cleaned using conditional logic.
+- Appointment status contains different case variations such as `Completed`, `completed`, `COMPLETED`.
+- Patient gender contains values such as `Male`, `MALE`, `M`, `m`, `Female`, `F`, `f` and `FEMALE`.
+- Doctor gender also contains inconsistent representations.
+- Patient and doctor email fields contain malformed and missing values.
+- Some doctors have missing department assignments.
+- Some admissions have missing department information.
+- Some departments have no assigned head doctor.
+- Several date fields are stored as text and require date conversion.
+- Negative billing and payment records require further business validation.
+- Some treatment records contain negative treatment costs.
+
+These issues should be considered before using financial values for final management reporting.
 
 ---
 
 ## Key Metrics / Analysis Areas
 
-The project evaluates the following healthcare and financial metrics:
+The project evaluates several important healthcare metrics:
 
 ### Hospital Activity
 
-Measures hospital-level appointments and admissions to understand operational activity.
+Measures appointment and admission activity across hospitals.
+
+**Key finding:**
+
+- MediCare Belagavi North Campus recorded the highest appointment activity with **493 appointments**.
+- The same hospital recorded **244 admissions**.
+- Combined appointment and admission activity was **737**.
 
 ### Doctor Workload
 
-Measures appointment activity per doctor and ranks doctors based on workload.
+Measures appointment activity to understand doctor workload.
 
-### Department Workload
+**Key finding:**
 
-Measures admission activity by department to identify differences in operational workload.
+- **Ramya Shetty (DR0008)** recorded the highest appointment activity with **409 appointments**.
+- This represents approximately **8.02%** of all 5,100 appointment records.
 
 ### Patient Activity
 
-Measures patient appointments and admissions to understand healthcare service usage.
+Measures patient utilization of healthcare services.
+
+**Key finding:**
+
+- **185 patients** had no appointment activity.
+- **257 patients** had at least 5 appointments.
+- The highest appointment count for a single patient was **10 appointments**.
+
+### Department Workload
+
+Measures admissions handled by departments.
+
+**Key finding:**
+
+- **Ophthalmology (D006)** recorded the highest admission workload with **240 admissions**.
 
 ### Admission Pattern
 
-Analyzes admission type and admission status.
+Measures the type of patient admissions.
+
+| Admission Type | Admissions | Percentage |
+|---|---:|---:|
+| Emergency | 1,165 | 46.60% |
+| Planned | 981 | 39.24% |
+| Referral | 354 | 14.16% |
+
+Emergency admissions represent the largest share of admissions.
+
+### Admission Status
+
+| Admission Status | Admissions | Percentage |
+|---|---:|---:|
+| Discharged | 1,869 | 74.76% |
+| Admitted | 371 | 14.84% |
+| Under Observation | 260 | 10.40% |
 
 ### Average Length of Stay
 
-Measures the average number of days between admission and discharge where valid dates are available.
+The average length of stay for valid admission and discharge date records is approximately:
+
+**7.44 days**
+
+The calculation uses `STR_TO_DATE()` and `DATEDIFF()` because the date fields are stored as text.
 
 ### Room Utilization
 
-Compares occupied and vacant rooms to understand room availability.
+The database contains:
 
-### Treatment Activity and Cost
+- 426 occupied rooms
+- 345 vacant rooms
+- 29 rooms under maintenance
 
-Measures treatment volume and total treatment cost.
+Overall observed room occupancy is approximately **53.25%**.
 
-### Laboratory Activity and Cost
+### Treatment Analysis
 
-Measures laboratory test volume and associated cost.
+Treatment records show:
 
-### Pharmacy Revenue
+- 2,668 Completed
+- 500 Ongoing
+- 332 Cancelled
 
-Measures medicine quantity sold and pharmacy revenue.
+The highest treatment count was recorded for **Appendicitis Management** with **213 records**.
 
-### Total Billed Amount
+### Laboratory Analysis
 
-Measures the total amount recorded in the billing table.
+The database contains **3,000 laboratory test records**.
 
-### Payment Collection
+The highest-volume test was:
 
-Measures payment amount and payment status.
+**Ultrasound Abdomen – 204 tests**
 
-### Collection Gap
+### Pharmacy Analysis
 
-Compares billed amounts with collected payments using the correct billing/payment level.
+Total pharmacy revenue in the dataset is approximately:
 
-### Doctor Ranking
+**₹1.93 crore**
 
-Uses `RANK()` to compare doctors based on appointment workload.
+The medicine with the highest revenue was:
 
-### Payment Trend Comparison
+**Atorvastatin 650mg – approximately ₹46.99 lakh**
 
-Uses `LAG()` to compare a payment with the previous payment.
+### Billing Analysis
 
-### Patient Admission Sequence
+Total billed amount in the dataset is approximately:
 
-Uses `LEAD()` to identify the next admission for each patient.
+**₹6.97 crore**
+
+Billing status:
+
+| Bill Status | Bills | Percentage |
+|---|---:|---:|
+| Paid | 3,267 | 65.34% |
+| Partially Paid | 996 | 19.92% |
+| Unpaid | 737 | 14.74% |
+
+### Payment Analysis
+
+Payment status:
+
+| Payment Status | Transactions | Percentage |
+|---|---:|---:|
+| Success | 4,413 | 88.26% |
+| Failed | 390 | 7.80% |
+| Refunded | 197 | 3.94% |
+
+Payment and billing records require careful reconciliation because multiple payment records can exist for the same bill.
 
 ---
 
 ## Key Insights
 
-Based on the SQL analysis performed in the project:
+Based on the SQL analysis:
 
-### 1. Doctor workload can be compared using appointment activity
+### 1. Hospital activity varies across locations
 
-The project calculates appointment counts for individual doctors and ranks them, providing a measurable view of doctor workload.
+Appointment and admission volumes are not evenly distributed across hospitals. MediCare Belagavi North Campus recorded the highest appointment and admission activity in the analyzed dataset.
 
-### 2. Patient healthcare activity differs across patients
+### 2. Doctor workload is concentrated
 
-The analysis combines appointment and admission activity at the patient level to identify patients with higher healthcare activity.
+Doctor appointment volumes vary significantly. Ramya Shetty recorded 409 appointments, making doctor-level workload analysis useful for staffing and workload planning.
 
-### 3. Hospital admission activity can be compared
+### 3. Ophthalmology has high admission workload
 
-The project ranks hospitals according to the number of admissions, helping management understand differences in inpatient activity.
+Ophthalmology recorded the highest department admission workload with 240 admissions. This indicates a higher level of admission activity within the analyzed data.
 
-### 4. Admission patterns can be monitored
+### 4. Emergency admissions represent a major workload
 
-Admission status and admission sequence analysis help understand how inpatient activity is distributed and whether patients have subsequent admissions.
+Emergency admissions account for 46.60% of the admission records, followed by planned admissions at 39.24%.
 
-### 5. Room availability can support capacity planning
+### 5. Patient utilization varies
 
-Comparing occupied and vacant rooms provides a basic operational view of room utilization across hospitals.
+Some patients have repeated appointment activity, while 185 patients have no appointment records. Patient-level analysis can therefore help understand service utilization patterns.
 
-### 6. Treatment costs vary across treatment types
+### 6. Hospital room utilization is moderate overall
 
-Treatment-level aggregation allows MediCare to identify treatments with higher total cost and activity.
+Overall room occupancy is approximately 53.25%, while utilization differs between hospitals. This can support hospital capacity and room allocation analysis.
 
-### 7. Laboratory services contribute measurable activity and cost
+### 7. Treatment activity contributes significant operational cost
 
-The analysis compares laboratory tests based on test count and total cost, helping identify higher-volume and higher-cost laboratory services.
+Treatment analysis shows differences in both treatment volume and total treatment cost. High-cost treatment categories require appropriate monitoring.
 
-### 8. Pharmacy transactions provide a revenue view
+### 8. Laboratory services have measurable workload and cost
 
-Medicine-level analysis identifies quantity sold and pharmacy revenue, supporting pharmacy activity monitoring.
+The database contains 3,000 laboratory records, allowing management to monitor test demand, cost and completion status.
 
-### 9. Billing and payment should be analyzed separately
+### 9. Pharmacy contributes significant revenue
 
-Billing represents the amount charged, while payment records represent collection activity. Therefore, both should be analyzed separately before calculating collection performance.
+Pharmacy transactions generate approximately ₹1.93 crore in the analyzed dataset. Medicine-level revenue analysis helps identify major revenue-generating medicines.
 
-### 10. Data quality can affect analytical accuracy
+### 10. Billing and payment data require reconciliation
 
-The SQL identifies inconsistent gender values, invalid email formats, missing department relationships, and other data-quality issues. These should be investigated before using the affected fields for final reporting.
+Billing contains Paid, Partially Paid and Unpaid records, while payments contain Success, Failed and Refunded transactions.
+
+Because multiple payment records may belong to the same bill, billing and payment analysis should be performed at the correct transaction level to avoid duplicate counting.
+
+### 11. Data quality affects business reporting
+
+Inconsistent categorical values, malformed emails, missing relationships, text-based dates and negative financial records can affect analysis if they are not validated before reporting.
 
 ---
 
@@ -437,67 +452,31 @@ The SQL identifies inconsistent gender values, invalid email formats, missing de
 
 ### Recommendations
 
-Based on the analysis performed in this project, MediCare should:
+Based on the analysis, MediCare should:
 
-1. **Monitor doctor workload**
-
-   * Regularly review appointment volume by doctor.
-   * Identify consistently high-workload doctors.
-   * Consider workload balancing when assigning appointments and resources.
-
-2. **Review department workload**
-
-   * Monitor departments with higher admission activity.
-   * Compare workload across departments and hospitals.
-   * Use this information for operational resource planning.
-
-3. **Improve hospital capacity planning**
-
-   * Compare hospital admissions with available bed capacity.
-   * Monitor occupied and vacant rooms.
-   * Review hospitals where resource utilization requires attention.
-
-4. **Monitor patient activity**
-
-   * Identify patients with repeated appointments or admissions.
-   * Use patient activity information to understand service demand patterns.
-
-5. **Monitor admission and length of stay**
-
-   * Track admission types and statuses.
-   * Monitor average length of stay using valid admission and discharge dates.
-   * Investigate unusually long stays from an operational planning perspective.
-
-6. **Review high-cost treatments**
-
-   * Monitor treatments with higher total costs.
-   * Compare treatment volume with treatment cost.
-   * Investigate unusual financial values before using them in final financial reporting.
-
-7. **Monitor laboratory services**
-
-   * Identify high-volume and high-cost laboratory tests.
-   * Review laboratory activity and cost together for better service planning.
-
-8. **Improve pharmacy planning**
-
-   * Monitor medicines with high sales quantity and revenue.
-   * Compare pharmacy demand with medicine stock quantity.
-   * Use this information to support inventory planning.
-
-9. **Strengthen billing and collection monitoring**
-
-   * Monitor total billed amount and payment collection separately.
-   * Track paid, unpaid, and partially paid bills.
-   * Calculate collection gaps carefully.
+- Monitor hospitals with high appointment and admission activity.
+- Review doctor workload to support balanced staffing.
+- Monitor departments with high admission volumes.
+- Use admission patterns to support emergency and planned-care resource planning.
+- Monitor room occupancy across hospitals for better capacity utilization.
+- Track average length of stay to support bed and resource planning.
+- Monitor high-volume and high-cost treatments.
+- Track laboratory workload and test costs.
+- Monitor pharmacy revenue and high-performing medicines.
+- Review unpaid and partially paid bills regularly.
+- Reconcile billing and payment transactions at the correct bill level.
+- Investigate negative billing, payment and treatment-cost records.
+- Standardize categorical values before creating management reports.
+- Improve data validation for emails, demographic fields and relationships.
+- Continue using SQL-based KPIs for regular healthcare operational monitoring.
 
 ### Conclusion
 
-The MediCare SQL project provides a relational and analytical view of healthcare operations, patient activity, hospital resources, healthcare services, billing, and payment collection.
+The MediCare SQL analysis provides a consolidated view of healthcare operations across hospitals, departments, doctors, patients and financial services.
 
-The analysis helps MediCare understand **doctor workload, department workload, hospital admissions, room utilization, treatment costs, laboratory activity, pharmacy revenue, billing status, and payment activity**.
+The analysis covers **hospital activity, doctor workload, patient activity, admissions, room utilization, treatments, laboratory services, pharmacy revenue, billing and payments**.
 
-By combining data-quality validation with SQL-based operational and financial analysis, MediCare can use its healthcare data to support **better resource planning, workload monitoring, service management, and financial collection monitoring**.
+The project demonstrates how relational healthcare data can be transformed into meaningful business insights using SQL and can support **data-driven operational planning, resource utilization and financial monitoring**.
 
 ---
 
@@ -505,30 +484,22 @@ By combining data-quality validation with SQL-based operational and financial an
 
 This project demonstrates practical skills in:
 
-* SQL database design
-* Relational database concepts
-* Healthcare data analysis
-* Primary and foreign keys
-* Data profiling
-* Data cleaning and validation
-* Data aggregation
-* Multi-table joins
-* Filtering and sorting
-* Subqueries
-* KPI analysis
-* Hospital operational analysis
-* Patient activity analysis
-* Doctor workload analysis
-* Admission analysis
-* Room utilization analysis
-* Treatment cost analysis
-* Laboratory analysis
-* Pharmacy revenue analysis
-* Billing analysis
-* Payment analysis
-* Window functions
-* Ranking analysis
-* Business insight generation
-* Data-driven recommendations
+- SQL database analysis
+- Relational database design
+- Healthcare data analysis
+- Data profiling
+- Data validation
+- Data cleaning
+- Multi-table joins
+- Aggregation
+- Grouping and filtering
+- Subqueries
+- Window functions
+- Ranking analysis
+- Time-based analysis
+- Financial analysis
+- KPI development
+- Business insight generation
+- Data-driven recommendations
 
-The final output is a SQL-based **MediCare Healthcare Database Analysis** designed to convert relational healthcare data into meaningful operational and financial insights and support better healthcare resource and collection planning.
+The final output is a SQL-based **MediCare Healthcare Database Analysis** designed to convert healthcare operational and financial data into meaningful insights for hospital management and resource planning.

@@ -40,7 +40,7 @@ class student:
         for m in mark:
             if not (0 <= m <= 100):
                 raise ValueError("Marks must be between 0 and 100")
-        self.mark=mark
+        self._mark=mark
 
     # protect attendance 
         self._attendance=attendance 
@@ -62,7 +62,6 @@ class student:
         if 0 <= value <= 100:
             return value
         else:
-            # raise ValueError("Please enter valid number")
             return "Please enter valid number"
 
     # calculate CGPA
@@ -79,7 +78,7 @@ class student:
         self._marks = new_marks
 
 
-# Example usage
+# Example
 std1 = student("keerthi", "CS501", "cse", [85, 90, 89], 89)
 std2 = student("dhana", "IT601", "it", [75, 89, 80], 90)
 

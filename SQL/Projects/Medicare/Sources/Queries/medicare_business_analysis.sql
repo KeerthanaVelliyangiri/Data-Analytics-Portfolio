@@ -1,3 +1,5 @@
+#Business Analysis
+
 #Which hospitals have the highest operational activity
 SELECT h.hospital_id,h.hospital_name,COUNT(a.appointment_id) AS total_appointments,COUNT(ad.admission_id) AS total_admissions
 FROM hospitals h
@@ -17,7 +19,8 @@ LEFT JOIN admissions ad
 ON d.department_id = ad.department_id
 LEFT JOIN hospitals h
 ON d.hospital_id = h.hospital_id
-GROUP BY d.department_id,d.department_name;
+GROUP BY d.department_id,d.department_name
+order by total_appointments desc;
 
 
 #Which doctors have the highest workload
@@ -48,7 +51,8 @@ LEFT JOIN admissions ad
 ON p.patient_id = ad.patient_id
 LEFT JOIN hospitals h
 ON a.hospital_id = h.hospital_id
-GROUP BY p.patient_id,p.first_name,h.hospital_name,h.city;
+GROUP BY p.patient_id,p.first_name,h.hospital_name,h.city
+order by total_appointments desc;
  
 # Which hospitals have the highest number of admissions?
 SELECT h.hospital_name,COUNT(DISTINCT ad.admission_id) AS total_admissions
@@ -75,7 +79,8 @@ SELECT h.hospital_id,h.hospital_name,COUNT(*) AS total_rooms,SUM(r.room_status =
 FROM rooms r
 LEFT JOIN hospitals h
 ON h.hospital_id = r.hospital_id
-GROUP BY hospital_id;
+GROUP BY hospital_id
+order by total_rooms desc;
 
 # Which treatments have the highest cost
 SELECT treatment_name,COUNT(*) AS treatment_count,SUM(treatment_cost) AS total_cost
@@ -91,11 +96,11 @@ GROUP BY test_name
 order by total_test_cost desc;
 
 # Which medicines generate the highest pharmacy revenue
-SELECT m.medicine_name,SUM(p.quantity) AS quantity_sold,SUM(p.total_price) AS total_revenue
+SELECT m.medicine_name,m.category,SUM(p.quantity) AS quantity_sold,SUM(p.total_price) AS total_revenue
 FROM medicines m
 JOIN pharmacy p
 ON m.medicine_id = p.medicine_id
-GROUP BY m.medicine_name
+GROUP BY m.medicine_name,m.category
 ORDER BY total_revenue DESC;
 
 # MediCare total billed revenue

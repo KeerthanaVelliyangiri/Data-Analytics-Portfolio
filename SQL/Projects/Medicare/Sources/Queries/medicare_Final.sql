@@ -33643,6 +33643,15 @@ ON h.hospital_id = ad.hospital_id
 GROUP BY h.hospital_id, h.hospital_name
 order by total_appointments desc;
 
+SELECT h.hospital_id,h.hospital_name,COUNT(a.appointment_id) AS total_appointments,COUNT(ad.admission_id) AS total_admissions
+FROM hospitals h
+LEFT JOIN appointments a
+ON h.hospital_id = a.hospital_id
+LEFT JOIN admissions ad
+ON h.hospital_id = ad.hospital_id
+GROUP BY h.hospital_id, h.hospital_name
+order by total_appointments asc;
+
 #Which departments have the highest workload
 SELECT d.department_id,h.hospital_name,d.department_name,COUNT(DISTINCT a.appointment_id) AS total_appointments,COUNT(DISTINCT ad.admission_id) AS total_admissions
 FROM departments d
@@ -33654,6 +33663,17 @@ LEFT JOIN hospitals h
 ON d.hospital_id = h.hospital_id
 GROUP BY d.department_id,d.department_name
 order by total_appointments desc;
+
+SELECT d.department_id,h.hospital_name,d.department_name,COUNT(DISTINCT a.appointment_id) AS total_appointments,COUNT(DISTINCT ad.admission_id) AS total_admissions
+FROM departments d
+LEFT JOIN appointments a
+ON d.hospital_id = a.hospital_id
+LEFT JOIN admissions ad
+ON d.department_id = ad.department_id
+LEFT JOIN hospitals h
+ON d.hospital_id = h.hospital_id
+GROUP BY d.department_id,d.department_name
+order by total_appointments asc;
 
 
 #Which doctors have the highest workload
@@ -33675,6 +33695,14 @@ LEFT JOIN hospitals h
 ON d.hospital_id = h.hospital_id 
 GROUP BY d.doctor_id,d.first_name;
 
+SELECT d.doctor_id,d.first_name, h.hospital_name,COUNT(a.appointment_id) AS total_appointments,RANK() OVER (ORDER BY COUNT(a.appointment_id) ASC) AS doctor_rank
+FROM doctors d
+LEFT JOIN appointments a
+ON d.doctor_id = a.doctor_id
+LEFT JOIN hospitals h
+ON d.hospital_id = h.hospital_id 
+GROUP BY d.doctor_id,d.first_name;
+
 # Which patients have the highest healthcare activity
 SELECT p.patient_id,p.first_name,h.hospital_name,h.city,COUNT(DISTINCT a.appointment_id) AS total_appointments,COUNT(DISTINCT ad.admission_id) AS total_admissions
 FROM patients p
@@ -33685,8 +33713,7 @@ ON p.patient_id = ad.patient_id
 LEFT JOIN hospitals h
 ON a.hospital_id = h.hospital_id
 GROUP BY p.patient_id,p.first_name,h.hospital_name,h.city
-order by total_appointments desc;
- 
+order by total_appointments desc; 
 # Which hospitals have the highest number of admissions?
 SELECT h.hospital_name,COUNT(DISTINCT ad.admission_id) AS total_admissions
 FROM hospitals h

@@ -41116,6 +41116,8 @@ INSERT INTO `Feedback` (`feedback_id`, `member_id`, `consultation_id`, `rating`,
 select * from Feedback;
 select count(*) from Feedback;
 
+# DATA PROFILING AND CLEANING
+
 # Members data profiling
 
 SELECT distinct gender from Members;
@@ -41161,69 +41163,8 @@ SELECT * from Billing where consultation_id is null;
 SELECT * FROM Payments where payment_mode is null;
 
 
-# How many members are registered - KPI
-Select count(*) AS total_members
-from Members;
 
-# How many specialists are in each specialization
-Select specialization,count(*) as specialist_count
-from Specialists
-group by specialization
-order by specialist_count desc;
-
-# specialists more than 10 years of experience
-select *
-from Specialists
-where experience_years > 10;
-
-# average consultation fee - KPI
-select ROUND(AVG(consultation_fee), 2) as avg_consultation_fee
-from Specialists;
-
-# highest consultation fee
-select max(consultation_fee) as highest_fee
-from Specialists;
-
-# top 5 specializations based on specialists - KPI
-select specialization,COUNT(*) as specialist_count
-from Specialists
-group by specialization
-order by specialist_count desc
-limit 5;
-
-#consultations for each status - KPI
-select status,COUNT(*) as consultation_count
-from Consultations
-group by status
-order by consultation_count desc;
-
-# How many consultations does  have each specialist - KPI
-select s.specialist_id,s.first_name,COUNT(c.consultation_id) as consultation_count
-from Specialists s
-LEFT JOIN Consultations c
-ON s.specialist_id = c.specialist_id
-group by s.specialist_id
-order by consultation_count desc;
-
-# Each specialist along with their clinic
-select s.first_name,c.clinic_name
-from Specialists s
-INNER JOIN Clinics c
-ON s.clinic_id = c.clinic_id;
-
-# total cost of all laboratory tests - KPI
-select SUM(test_cost) AS total_lab_cost
-from Lab_Tests;
-
-# total amount of insurance claims - KPI
-select SUM(claim_amount) as total_claim_amount
-from Claims;
-
-# total claim amount for each insurance provider
-select insurance_provider,SUM(claim_amount) as total_claim_amount
-from Claims
-group by insurance_provider
-order by total_claim_amount DESC;
+# BUSINESS ANALYSIS
 
 use healthplus;
 
@@ -41326,8 +41267,73 @@ GROUP BY c.clinic_id, c.clinic_name,s.designation,s.employment_type
 ORDER BY c.clinic_id;
 
 
+# KPI ANALYSIS
 
+# 1. Total Members
+SELECT COUNT(*) AS total_members
+FROM Members;
 
+# 2. Total Specialists
+SELECT COUNT(*) AS total_specialists
+FROM Specialists;
+
+# 3. Total Clinics
+SELECT COUNT(*) AS total_clinics
+FROM Clinics;
+
+# 4. Total Consultations
+SELECT COUNT(*) AS total_consultations
+FROM Consultations;
+
+# 5. Highest Consultation Fee
+SELECT MAX(consultation_fee) AS highest_consultation_fee
+FROM Specialists;
+
+# 6. Total Telemedicine Sessions
+SELECT COUNT(*) AS total_telemedicine_sessions
+FROM Telemedicine_Sessions;
+
+# 7. Total Package Subscriptions
+SELECT COUNT(*) AS total_package_subscriptions
+FROM Package_Subscriptions;
+
+# 8. Active Package Subscriptions
+SELECT COUNT(*) AS active_package_subscriptions
+FROM Package_Subscriptions
+WHERE expiry_date >= CURDATE();
+
+# 9. Expired Package Subscriptions
+SELECT COUNT(*) AS expired_package_subscriptions
+FROM Package_Subscriptions
+WHERE expiry_date < CURDATE();
+
+# 10. Total Prescriptions
+SELECT COUNT(*) AS total_prescriptions
+FROM Prescriptions;
+
+# 11. Total Laboratory Tests
+SELECT COUNT(*) AS total_lab_tests
+FROM Lab_Tests;
+
+# 12. Total Laboratory Cost
+SELECT ROUND(SUM(test_cost), 2) AS total_lab_cost
+FROM Lab_Tests;
+
+# 13. Total Insurance Claims
+SELECT COUNT(*) AS total_claims
+FROM Claims;
+
+# 14. Total Insurance Claim Amount
+SELECT ROUND(SUM(claim_amount), 2) AS total_claim_amount
+FROM Claims;
+
+# 15. Total Billed Amount
+SELECT ROUND(SUM(total_amount), 2) AS total_billed_amount
+FROM Billing;
+
+# 26. Total Corporate Members
+SELECT COUNT(DISTINCT member_id) AS corporate_members
+FROM Corporate_Members;
 
 
 

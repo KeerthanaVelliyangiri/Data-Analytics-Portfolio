@@ -89,8 +89,6 @@ The analysis included:
 
 The Excel dashboard provides an interactive view of FreshMart's overall business performance.
 
-![FreshMart Dashboard](Dashboard Screenshot/Freshmart_Dashboard_Screenshot.png)
-
 ### Dashboard Features
 
 * Total Sales
@@ -108,7 +106,7 @@ The Excel dashboard provides an interactive view of FreshMart's overall business
 
 ### Dashboard Screenshot
 
-![FreshMart Sales Dashboard](Dashboard%20Screenshot/Dashboard%20Screenshot.png)
+![FreshMart Sales Dashboard](Dashboard Screenshot/Freshmart_Dashboard_Screenshot.png)
 
 ---
 

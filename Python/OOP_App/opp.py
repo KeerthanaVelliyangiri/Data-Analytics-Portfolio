@@ -276,9 +276,7 @@ class University:
             print("6. View Faculty")
             print("7. Exit")
 
-            choice = input(
-                "Enter your choice: "
-            )
+            choice = input("Enter your choice: ")
             # Option 1
             if choice == "1":
                 self.add_student()

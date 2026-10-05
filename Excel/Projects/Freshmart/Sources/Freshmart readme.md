@@ -108,6 +108,7 @@ The Excel dashboard provides an interactive view of FreshMart's overall business
 
 ![FreshMart Sales Dashboard](Dashboard Screenshot/Freshmart_Dashboard_Screenshot.png)
 
+
 ---
 
 # 📌 KPIs

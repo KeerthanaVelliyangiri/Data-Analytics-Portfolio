@@ -93,8 +93,9 @@ class Student(Person):
         print("Attendance   :", self.attendance, "%")
         print("Exam Status  :",self.check_attendance())
 
-# Faculty also inherits from Person.
-# It contains faculty-specific information.
+# Faculty inherits from Person.
+# It conta
+# ins faculty-specific information.
 class Faculty(Person):
     def __init__(
         self,

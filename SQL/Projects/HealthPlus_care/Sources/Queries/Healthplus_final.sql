@@ -41198,7 +41198,7 @@ FROM Telemedicine_Sessions
 GROUP BY session_status
 ORDER BY session_count DESC;
 
-# 5. Telemedicine - Condition and program-status distribution
+# 5. Telemedicine  Condition and program status distribution
 SELECT condition_name,program_status,COUNT(*) AS program_count
 FROM Chronic_Care_Programs
 GROUP BY condition_name, program_status

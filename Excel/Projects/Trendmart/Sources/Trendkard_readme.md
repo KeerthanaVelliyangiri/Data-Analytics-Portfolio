@@ -97,7 +97,7 @@ The interactive Excel dashboard provides a management-level view of TrendMart's 
 
 ### Dashboard Screenshot
 
-![TrendKart Dashboard](../Screenshot/Dashboard_Screenshot.png)
+![TrendKart Dashboard](..Sources/Screenshot/Dashboard_Screenshot.png)
 
 
 

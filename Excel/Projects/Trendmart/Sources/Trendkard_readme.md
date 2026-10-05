@@ -100,6 +100,7 @@ The interactive Excel dashboard provides a management-level view of TrendMart's 
 ![TrendKart Dashboard](../Screenshot/Dashboard_Screenshot.png)
 
 
+
 ---
 
 # 📌 Key Performance Indicators

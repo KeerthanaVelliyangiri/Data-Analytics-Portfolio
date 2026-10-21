@@ -198,10 +198,28 @@ Add screenshots of your actual application output to demonstrate its functionali
 
 After uploading a screenshot to the `screenshots` folder, you can display it here:
 
-```markdown
-![Student Management System Output](./Screenshot/Screenshot.png)
 
-```
+
+### 1.  Add Student
+![Main Menu](./Screenshot/screenshot1.png)
+
+### 2. View Student Information
+![Add Student](./Screenshot/screenshot2.png)
+
+### 3. Attendance Eligibility
+![View Students](./Screenshot/screenshot3.png)
+
+### 4. Academic Result
+![Academic Result](./Screenshot/screenshot4.png)
+
+### 5. Add Faculty
+![Attendance Eligibility](./Screenshot/screenshot5.png)
+
+### 6. Faculty Information
+![Faculty Information](./Screenshot/screenshot6.png)
+
+
+
 
 Suggested screenshots:
 

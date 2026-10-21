@@ -236,10 +236,6 @@ Through this project, I practised:
 - Organizing application logic for readability and reusability.
 - Building a practical console-based application.
 
-## 🔗 Project Repository
-
-**GitHub:** [Data-Analytics-Portfolio – OOP_App](https://github.com/KeerthanaVelliyangiri/Data-Analytics-Portfolio/tree/main/Python/OOP_App)
-
 ## 📝 Conclusion
 
 The Nova University Student Management System demonstrates how Python and Object-Oriented Programming can be used to organize student and faculty information, calculate academic results, validate attendance, and support basic academic checks through a console-based application.

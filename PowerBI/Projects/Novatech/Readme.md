@@ -38,7 +38,7 @@ Developed an interactive Power BI dashboard to monitor manufacturing performance
 
 ## Dashboard
 
-![Novitech Manufacturing Dashboard](../Screenshot/screenshot.png)
+![Novitech Manufacturing Dashboard](/Screenshot/screenshot.png)
 
 
 ### Business Questions and Dashboard Solutions

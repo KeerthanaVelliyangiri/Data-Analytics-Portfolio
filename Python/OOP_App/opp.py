@@ -184,7 +184,7 @@ class University:
             phone,
             department,
             attendance,
-            python_marks,
+            python_marks,2
             sql_marks,
             excel_marks
         )

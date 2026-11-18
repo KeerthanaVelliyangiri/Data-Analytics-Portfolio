@@ -173,10 +173,10 @@ footer {
 @st.cache_resource
 def initialize_gemini():
 
-    api_key = st.secrets["GEMINI_API_KEYT"]
+    api_key = st.secrets["GEMINI_API_KEY"]
 
     llm = ChatGoogleGenerativeAI(
-        model="gemini-3.8-flash",
+        model="gemini-3.6-flash",
         google_api_key=api_key,
         temperature=0.2
     )

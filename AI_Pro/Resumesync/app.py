@@ -738,7 +738,7 @@ if "results" not in st.session_state:
 # 10. MAIN APPLICATION HEADER
 # =====================================================
 
-st.title("📄 TalentMatch AI")
+st.title("TalentMatch AI")
 
 st.markdown(
     """
@@ -799,7 +799,7 @@ with st.sidebar:
 # 12. JOB DESCRIPTION INPUT
 # =====================================================
 
-st.subheader("1. Enter Job Description")
+st.subheader("Enter Job Description")
 
 job_description = st.text_area(
     "Paste the complete job description here",
@@ -826,7 +826,7 @@ job_description = st.text_area(
 # 14. RESUME UPLOAD
 # =====================================================
 
-st.subheader("3. Upload Candidate Resumes")
+st.subheader("Upload Candidate Resumes")
 
 uploaded_files = st.file_uploader(
     "Upload PDF or DOCX resumes",
@@ -851,7 +851,7 @@ if uploaded_files:
 # =====================================================
 
 if st.button(
-    "🚀 Analyse Resumes",
+    " Analyse Resumes",
     type="primary",
     use_container_width=True
 ):
@@ -994,9 +994,6 @@ if st.session_state["results"]:
 
             "File Name":
                 candidate.get("file_name"),
-
-            "AI Provider":
-                candidate.get("ai_provider"),
 
             "Match Score (%)":
                 candidate.get("match_percentage"),

@@ -1,4 +1,3 @@
-
 # ResumeSync – AI Career & Recruitment Platform
 
 ResumeSync is an AI-powered career and recruitment web application I developed using Python, Streamlit, and AI technologies. The main idea behind this project is to help recruiters screen candidate resumes against job descriptions and help job seekers understand their skills, identify skill gaps, and improve their career opportunities in one place.
@@ -40,6 +39,9 @@ In Recruiter Mode, recruiters upload multiple resumes and provide a job descript
 In Job Seeker Mode, users upload their resumes and enter a target job description. The AI analyzes the resume and provides an estimated match percentage, matched skills, missing skills, strengths, and improvement areas. Users can also generate skill-gap recommendations, career roadmaps, job search links, and practice mock interviews.
 
 The AI integration uses Google Gemini as the primary provider and Groq as an automatic fallback provider. LangChain manages LLM interactions, while HuggingFace embeddings and FAISS support vector-based document retrieval. SQLite is used to store application reports.
+
+<img width="1112" height="569" alt="screenshottwo" src="https://github.com/user-attachments/assets/a75ffdbf-1860-417b-a39e-3b182642544a" />
+<img width="1117" height="569" alt="screenshotone" src="https://github.com/user-attachments/assets/cb77f32e-7d3f-4ade-8a12-fdf8993d3320" />
 
 ## Run the Project Locally
 
